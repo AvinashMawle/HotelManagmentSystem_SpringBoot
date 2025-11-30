@@ -2,6 +2,7 @@ package com.airBnb.airBnbProject.service;
 
 import com.airBnb.airBnbProject.dto.HotelDto;
 import com.airBnb.airBnbProject.entity.Hotel;
+import com.airBnb.airBnbProject.entity.HotelContactInfo;
 import com.airBnb.airBnbProject.exception.HotelNotFoundException;
 import com.airBnb.airBnbProject.repository.HotelRepository;
 import org.modelmapper.ModelMapper;
@@ -38,5 +39,37 @@ public class HotelServiceImpl implements HotelService{
                 .orElseThrow(() -> new HotelNotFoundException("Hotel not found with id: " + id));
 
         return modelMapper.map(hotel, HotelDto.class);
+    }
+
+
+
+    @Override
+    public HotelDto updateHotelById(Long id, HotelDto hotelDto) {
+
+        Hotel existing = hotelRepository.findById(id)
+                .orElseThrow(() -> new HotelNotFoundException("Hotel not found with id: " + id));
+
+        // Update only fields present in DTO (Put or Patch style)
+        existing.setName(hotelDto.getName());
+        existing.setCity(hotelDto.getCity());
+        existing.setPhotos(hotelDto.getPhotos());
+        existing.setAmenities(hotelDto.getAmenities());
+        existing.setActive(hotelDto.getActive());
+
+        if (hotelDto.getContactInfo() != null) {
+            existing.setContactInfo(modelMapper.map(hotelDto.getContactInfo(), HotelContactInfo.class));
+        }
+
+        Hotel updated = hotelRepository.save(existing);
+
+        return modelMapper.map(updated, HotelDto.class);
+    }
+
+    @Override
+    public void deleteHotelById(Long id) {
+        Hotel hotel = hotelRepository.findById(id)
+                .orElseThrow(() -> new HotelNotFoundException("Hotel not found with id: " + id));
+
+        hotelRepository.delete(hotel);
     }
 }

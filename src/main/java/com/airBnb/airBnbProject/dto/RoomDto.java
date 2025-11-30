@@ -1,48 +1,27 @@
-package com.airBnb.airBnbProject.entity;
-
-import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+package com.airBnb.airBnbProject.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Entity
-public class Room {
+public class RoomDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "hotel_id", nullable = false)
-    private Hotel hotel;
+    private Long hotelId;   // instead of embedding Hotel entity
 
-    @Column(nullable = false)
     private String type;
 
-    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal basePrice;
 
-    @Column(columnDefinition = "JSON")
     private String[] photos;
 
-    @Column(columnDefinition = "JSON")
     private String[] amenities;
 
-    @Column(nullable = false)
     private Integer totalCount;
 
-    @Column(nullable = false)
     private Integer capacity;
 
-    @CreationTimestamp
-    @Column(updatable = false)
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
-
+    // Getters & Setters
     public Long getId() {
         return id;
     }
@@ -51,12 +30,12 @@ public class Room {
         this.id = id;
     }
 
-    public Hotel getHotel() {
-        return hotel;
+    public Long getHotelId() {
+        return hotelId;
     }
 
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
+    public void setHotelId(Long hotelId) {
+        this.hotelId = hotelId;
     }
 
     public String getType() {
@@ -106,23 +85,6 @@ public class Room {
     public void setCapacity(Integer capacity) {
         this.capacity = capacity;
     }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
 
 
 }
